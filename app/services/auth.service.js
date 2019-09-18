@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { apiService } from './api.service'
 import { SESSION_USER_KEY, SESSION_AUTH_KEY } from './constants';
 import { store } from "../store";
+import * as utils from "~/shared/utils";
 
 const appSettings = require("application-settings");
 
@@ -22,6 +23,8 @@ function login(email, password) {
 function logout() {
     appSettings.remove(SESSION_USER_KEY);
     appSettings.remove(SESSION_AUTH_KEY, '');
+    utils.closeDrawer();
+    utils.disableDrawer();
     store.dispatch("logout");
 }
 
@@ -31,12 +34,12 @@ function currentUser() {
     } else {
         return null;
     }
-
 }
 
 function handleLogin(data) {
     if (data && data.jwt) {
         signIn(data.jwt);
+        utils.enableDrawer();
     } else {
         return Promise.reject(response.error);
     }

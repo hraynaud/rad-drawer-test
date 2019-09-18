@@ -3,7 +3,7 @@
     <FlexboxLayout class="page">
       <StackLayout class="form">
         <Image class="logo" src="~/assets/images/logo.png"></Image>
-        <Label class="header" text="APP NAME"></Label>
+        <Label class="header" text="Konmego"></Label>
 
         <GridLayout rows="auto, auto, auto">
           <StackLayout row="0" class="input-field">
