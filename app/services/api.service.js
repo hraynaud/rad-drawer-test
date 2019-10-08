@@ -7,7 +7,7 @@ const appSettings = require("application-settings");
 // qa and production deployments
 
 const baseURL = `http://${LOCAL_IP}:3000/`;
-
+console.log("!!!! BASEURL", baseURL)
 function get(path) {
   return execute('GET', path)
 }
@@ -16,10 +16,15 @@ function post(path, payload) {
   return execute('POST', path, stringify(payload))
 }
 
+function baseUrl(){
+  return baseURL;
+}
+
 // eslint-disable-next-line no-unused-vars
 function put(path, payload) {
   return execute('PUT', path, stringify(payload))
 }
+
 
 //the word 'delete 'is a js operator
 // eslint-disable-next-line no-unused-vars
@@ -67,4 +72,5 @@ function errHandler(error) {
 export const apiService = {
   post,
   get,
+  baseUrl
 };

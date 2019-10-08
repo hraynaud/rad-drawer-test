@@ -20,10 +20,18 @@
       <Label class="action-bar-title" text="Browse"></Label>
     </ActionBar>
 
-    <GridLayout class="page-content">
-      <Label class="page-icon fa" text.decode="&#xf1ea;"></Label>
-      <Label class="page-placeholder" :text="message"></Label>
-      <WebView height="230" width="350" id="graph2" ref="graph2" />
+    <GridLayout rows="auto,*" backgroundColor="#3c495e">
+      <StackLayout row="0">
+        <Label text="Search" col="0"></Label>
+        <TextField
+          v-model="searchValue"
+          hint="Enter text..."
+          @returnPress="onSearch"
+          row="0"
+          col="1"
+        />
+      </StackLayout>
+      <WebView id="graph2" ref="graph2" row="1" />
     </GridLayout>
   </Page>
 </template>
@@ -38,9 +46,18 @@ import { WebView } from "tns-core-modules/ui/web-view";
 import { EventData } from "tns-core-modules/data/observable";
 import { WebViewUtils } from "nativescript-webview-utils";
 
+let webView;
+const headers = new Map();
+
 export default {
+  data() {
+    return {
+      searchValue: ""
+    };
+  },
   mounted() {
     SelectedPageService.getInstance().updateSelectedPage("Browse");
+    this.searchValue = "Cooking";
   },
   computed: {
     message() {
@@ -52,16 +69,21 @@ export default {
       utils.showDrawer();
     },
     apiTopicSearhPath() {
-      return `${apiService.baseUrl()}/graph2.html`;
+      return `${apiService.baseUrl()}/api/v1/topic_contacts`;
+    },
+    onSearch(){
+      this.loadWebview();
+      webView.reload();
+    },
+    loadWebview() {
+      headers.set("X-Custom-Header-Topic", this.searchValue);
+      WebViewUtils.addHeaders(webView, headers);
+      webView.src = this.apiTopicSearhPath();
     },
     pageLoaded(args) {
       let p = args.object;
-      let webView = p.getViewById("graph2");
-      const headers = new Map();
-      headers.set("Foo", "Bar :P");
-      headers.set("X-Custom-Header", "Set at " + new Date().toTimeString());
-      WebViewUtils.addHeaders(webView, headers);
-      webView.src = this.apiTopicSearhPath();
+      webView = p.getViewById("graph2");
+      this.loadWebview();
     }
   }
 };

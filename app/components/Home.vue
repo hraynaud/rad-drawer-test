@@ -20,7 +20,7 @@
       <Label class="action-bar-title" text="Home"></Label>
     </ActionBar>
 
-    <GridLayout class="page-content">
+    <StackLayout class="page-content">
        <ListView for="p in projects" class="list-group">
           <v-template>
             <StackLayout class="list-group-item">
@@ -28,7 +28,7 @@
             </StackLayout>
           </v-template>
         </ListView>
-    </GridLayout>
+    </StackLayout>
   </Page>
 </template>
 
