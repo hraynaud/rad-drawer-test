@@ -77,7 +77,7 @@
 
 <script>
 import Home from "./Home";
-import {authService} from "../services/auth.service"
+import { authService } from "../services/auth.service";
 
 export default {
   data() {
@@ -132,8 +132,8 @@ export default {
         return;
       }
 
-      this.authService
-        .register(this.user)
+      authService
+        .register(this.email, this.password)
         .then(() => {
           this.loading = false;
           this.alert("Your account was successfully created.");
