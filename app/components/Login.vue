@@ -126,7 +126,7 @@ export default {
     },
 
     register() {
-      if (this.user.password != this.user.confirmPassword) {
+      if (this.password != this.confirmPassword) {
         this.alert("Your passwords do not match.");
         this.loading = false;
         return;
@@ -139,7 +139,7 @@ export default {
           this.alert("Your account was successfully created.");
           this.isLoggingIn = true;
         })
-        .catch(() => {
+        .catch(e => {
           this.loading = false;
           this.alert("Unfortunately we were unable to create your account.");
         });

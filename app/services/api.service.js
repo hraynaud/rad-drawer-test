@@ -2,12 +2,8 @@ import * as http from "http";
 import { SESSION_AUTH_KEY } from "./constants";
 
 const appSettings = require("application-settings");
+const serverUrl = `http://${SERVER_ENDPOINT}`;
 
-// FIXME change LOCAL_IP to SERVER_ENDPOINT and handle
-// qa and production deployments
-
-const baseURL = `http://${LOCAL_IP}:3000/`;
-console.log("!!!! BASEURL", baseURL)
 function get(path) {
     return execute("GET", path);
 }
@@ -16,15 +12,14 @@ function post(path, payload) {
     return execute("POST", path, stringify(payload));
 }
 
-function baseUrl() {
-    return baseURL;
+function getServerUrl(path, payload) {
+    return serverUrl;
 }
 
 // eslint-disable-next-line no-unused-vars
 function put(path, payload) {
     return execute("PUT", path, stringify(payload));
 }
-
 
 //the word 'delete 'is a js operator
 // eslint-disable-next-line no-unused-vars
@@ -45,7 +40,7 @@ function execute(method, path, content = {}) {
 }
 
 function requestConfig(custConfig, path) {
-    let url = `${baseURL}/${path}`;
+    let url = `${serverUrl}${path}`;
     let baseConfig = {
         headers: {
             "Content-Type": "application/json",
@@ -76,5 +71,5 @@ function errHandler(error) {
 export const apiService = {
     post,
     get,
-    baseUrl
+    getServerUrl
 };

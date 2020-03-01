@@ -68,8 +68,8 @@ export default {
     onDrawerButtonTap() {
       utils.showDrawer();
     },
-    apiTopicSearhPath() {
-      return `${apiService.baseUrl()}/api/v1/topic_contacts`;
+    apiTopicSearchPath() {
+      return `${apiService.serverUrl()}/api/v1/topic_contacts`;
     },
     onSearch(){
       this.loadWebview();

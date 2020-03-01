@@ -11,6 +11,7 @@ const appSettings = require("application-settings");
 export const authService = {
     login,
     logout,
+    register,
     currentUser,
     isLoggedIn
 };
@@ -26,6 +27,10 @@ function logout() {
     utils.closeDrawer();
     utils.disableDrawer();
     store.dispatch("logout");
+}
+
+function register(email, password) {
+    return apiService.post("/register", { email, password }).then(handleLogin);
 }
 
 function currentUser() {
