@@ -5,7 +5,11 @@
             Use the NavigationButton as a side-drawer button in Android
             because ActionItems are shown on the right side of the ActionBar
       -->
-      <NavigationButton ios:visibility="collapsed" icon="res://menu" @tap="onDrawerButtonTap"></NavigationButton>
+      <NavigationButton
+        ios:visibility="collapsed"
+        icon="res://menu"
+        @tap="onDrawerButtonTap"
+      ></NavigationButton>
       <!-- 
             Use the ActionItem for IOS with position set to left. Using the
             NavigationButton as a side-drawer button in iOS is not possible,
@@ -35,7 +39,6 @@
     </GridLayout>
   </Page>
 </template>
-
 
 <script>
 import * as utils from "~/shared/utils";
@@ -71,7 +74,7 @@ export default {
     apiTopicSearchPath() {
       return `${apiService.serverUrl()}/api/v1/topic_contacts`;
     },
-    onSearch(){
+    onSearch() {
       this.loadWebview();
       webView.reload();
     },

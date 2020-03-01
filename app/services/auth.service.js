@@ -1,8 +1,7 @@
-
-import nodeify from 'nativescript-nodeify';
-import jwt from 'jsonwebtoken';
-import { apiService } from './api.service'
-import { SESSION_USER_KEY, SESSION_AUTH_KEY } from './constants';
+import nodeify from "nativescript-nodeify";
+import jwt from "jsonwebtoken";
+import { apiService } from "./api.service";
+import { SESSION_USER_KEY, SESSION_AUTH_KEY } from "./constants";
 import { store } from "../store";
 import * as utils from "~/shared/utils";
 
@@ -17,13 +16,12 @@ export const authService = {
 };
 
 function login(email, password) {
-    return apiService.post('/login', { email, password })
-        .then(handleLogin)
+    return apiService.post("/login", { email, password }).then(handleLogin);
 }
 
 function logout() {
     appSettings.remove(SESSION_USER_KEY);
-    appSettings.remove(SESSION_AUTH_KEY, '');
+    appSettings.remove(SESSION_AUTH_KEY, "");
     utils.closeDrawer();
     utils.disableDrawer();
     store.dispatch("logout");
@@ -48,7 +46,7 @@ function handleLogin(data) {
     } else {
         return Promise.reject(response.error);
     }
-}   
+}
 
 function isLoggedIn() {
     return !!this.currentUser();
@@ -60,6 +58,6 @@ function signIn(token) {
     //pass the decoded jwt into IIFE then destructue and set user var.
     var user = (({ first, last }) => ({ first, last }))(jwt.decode(token));
 
-    appSettings.setString(SESSION_USER_KEY, JSON.stringify(user))
-    store.dispatch("login")
+    appSettings.setString(SESSION_USER_KEY, JSON.stringify(user));
+    store.dispatch("login");
 }
