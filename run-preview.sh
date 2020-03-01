@@ -1,1 +1,1 @@
-tns run preview --env.localDevIP=$LOCAL_IP
+tns run preview --env.localServer=$SERVER_ENDPOINT

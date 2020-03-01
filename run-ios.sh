@@ -1,1 +1,1 @@
-tns run ios --env.localDevIP=$LOCAL_IP
+tns run ios  --device 'iPhone 11' --env.localServer=$SERVER_ENDPOINT

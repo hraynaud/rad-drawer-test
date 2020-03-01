@@ -54,6 +54,15 @@ module.exports = env => {
         verbose // --env.verbose
     } = env;
 
+    //TODO can't I just test against env.production here and ignore process.env.NODE_ENV?
+    var environment =
+        process.env.NODE_ENV === "production" ? "production" : "development";
+
+    const API_URL = {
+        production: JSON.stringify("prod-url"),
+        development: JSON.stringify(env.localServer)
+    };
+
     const isAnySourceMapEnabled = !!sourceMap || !!hiddenSourceMap;
     const externals = nsWebpack.getConvertedExternals(env.externals);
 
@@ -287,9 +296,9 @@ module.exports = env => {
             // Define useful constants like TNS_WEBPACK
             new webpack.DefinePlugin({
                 "global.TNS_WEBPACK": "true",
-                "TNS_ENV": JSON.stringify(mode),
-                "process": "global.process",
-                "LOCAL_IP": JSON.stringify(env.localDevIP)
+                TNS_ENV: JSON.stringify(mode),
+                process: "global.process",
+                SERVER_ENDPOINT: API_URL[environment]
             }),
             // Remove all files from the out dir.
             new CleanWebpackPlugin(itemsToClean, { verbose: !!verbose }),
