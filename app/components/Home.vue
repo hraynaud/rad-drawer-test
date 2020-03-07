@@ -5,7 +5,11 @@
             Use the NavigationButton as a side-drawer button in Android
             because ActionItems are shown on the right side of the ActionBar
       -->
-      <NavigationButton ios:visibility="collapsed" icon="res://menu" @tap="onDrawerButtonTap"></NavigationButton>
+      <NavigationButton
+        ios:visibility="collapsed"
+        icon="res://menu"
+        @tap="onDrawerButtonTap"
+      ></NavigationButton>
       <!-- 
             Use the ActionItem for IOS with position set to left. Using the
             NavigationButton as a side-drawer button in iOS is not possible,
@@ -21,13 +25,13 @@
     </ActionBar>
 
     <StackLayout class="page-content">
-       <ListView for="p in projects" class="list-group">
-          <v-template>
-            <StackLayout class="list-group-item">
-              <Label :text="p.name" />
-            </StackLayout>
-          </v-template>
-        </ListView>
+      <ListView for="p in projects" class="list-group">
+        <v-template>
+          <StackLayout class="list-group-item">
+            <Label :text="p.name" />
+          </StackLayout>
+        </v-template>
+      </ListView>
     </StackLayout>
   </Page>
 </template>
@@ -45,7 +49,6 @@ export default {
   },
   mounted() {
     SelectedPageService.getInstance().updateSelectedPage("Home");
-    console.log("!! local IP", LOCAL_IP);
     apiService.get("api/v1/projects").then(
       data => {
         this.projects = data.sort(function(a, b) {
