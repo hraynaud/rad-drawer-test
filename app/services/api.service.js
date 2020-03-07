@@ -35,8 +35,17 @@ function execute(method, path, content = {}) {
     return http
         .request(requestConfig({ method: method, ...content }, path))
         .then(response => {
-            return response.content.toJSON();
-        });
+            if (response.headers["X-Message"]) {
+                throw response.headers["X-Message"];
+            }
+            if (response.statusCode == 500) {
+                let content = response.content.toJSON();
+                throw `${content.error} -- ${content.exception.toString()}`;
+            } else {
+                return response.content.toJSON();
+            }
+        })
+        .catch(errHandler);
 }
 
 function requestConfig(custConfig, path) {
@@ -56,16 +65,13 @@ function stringify(payload) {
     return { content: JSON.stringify(payload) };
 }
 
-function errHandler(error) {
-    let msg;
-    if (error.response) {
-        msg = error.response.data.error;
-    } else if (error.request) {
-        msg = "Server not responding";
-    } else {
-        msg = "Unable to connect to API";
-    }
-    throw new Error(msg);
+function errHandler(err) {
+    let msg = isError(err) ? err.message : err;
+    throw msg;
+}
+
+function isError(value) {
+    return value instanceof Error && typeof value.message !== "undefined";
 }
 
 export const apiService = {

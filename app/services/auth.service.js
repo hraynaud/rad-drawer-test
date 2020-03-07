@@ -16,7 +16,21 @@ export const authService = {
 };
 
 function login(email, password) {
-    return apiService.post("/login", { email, password }).then(handleLogin);
+    return apiService
+        .post("/login", { email, password })
+        .then(handleLogin)
+        .catch(error => {
+            throw new Error(error);
+        });
+}
+
+function register(email, password) {
+    return apiService
+        .post("/register", { email, password })
+        .then(handleLogin)
+        .catch(error => {
+            throw new error(error);
+        });
 }
 
 function logout() {
@@ -26,11 +40,6 @@ function logout() {
     utils.disableDrawer();
     store.dispatch("logout");
 }
-
-function register(email, password) {
-    return apiService.post("/register", { email, password }).then(handleLogin);
-}
-
 function currentUser() {
     if (appSettings.getString(SESSION_USER_KEY)) {
         return JSON.parse(appSettings.getString(SESSION_USER_KEY));
@@ -40,11 +49,13 @@ function currentUser() {
 }
 
 function handleLogin(data) {
+    if (data && data.error) {
+        throw new Error(data.error);
+    }
+
     if (data && data.jwt) {
         signIn(data.jwt);
         utils.enableDrawer();
-    } else {
-        return Promise.reject(response.error);
     }
 }
 

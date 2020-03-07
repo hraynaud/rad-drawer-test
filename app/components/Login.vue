@@ -67,7 +67,9 @@
 
       <Label class="login-label sign-up-label" @tap="toggleForm">
         <FormattedString>
-          <Span :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"></Span>
+          <Span
+            :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"
+          ></Span>
           <Span :text="isLoggingIn ? 'Sign up' : ''" class="bold"></Span>
         </FormattedString>
       </Label>
@@ -99,7 +101,7 @@ export default {
 
     submit() {
       if (!this.email || !this.password) {
-        this.alert("Please provide both an email address and password.");
+        this.errorAlert("Please provide both an email address and password.");
         return;
       }
 
@@ -120,14 +122,14 @@ export default {
           this.$navigateTo(Home, { clearHistory: true });
         })
         .catch(error => {
-          this.error = error.message;
           this.loading = false;
+          this.errorAlert(error.message);
         });
     },
 
     register() {
       if (this.password != this.confirmPassword) {
-        this.alert("Your passwords do not match.");
+        this.errorAlert("Your passwords do not match.");
         this.loading = false;
         return;
       }
@@ -141,7 +143,7 @@ export default {
         })
         .catch(e => {
           this.loading = false;
-          this.alert("Unfortunately we were unable to create your account.");
+          this.errorAlert("We were unable to create your account.");
         });
     },
 
@@ -164,7 +166,7 @@ export default {
               );
             })
             .catch(() => {
-              this.alert(
+              this.errorAlert(
                 "Unfortunately, an error occurred resetting your password."
               );
             });
@@ -180,10 +182,12 @@ export default {
         this.$refs.confirmPassword.nativeView.focus();
       }
     },
-
-    alert(message) {
+    errorAlert(message) {
+      return this.alert(message, "Error");
+    },
+    alert(message, title = "") {
       return alert({
-        title: "APP NAME",
+        title: title,
         okButtonText: "OK",
         message: message
       });
