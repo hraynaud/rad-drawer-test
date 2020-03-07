@@ -12,7 +12,10 @@
       "appRoot": "${workspaceRoot}",
       "sourceMaps": true,
       "watch": true,
-      "tnsArgs": ["--env.localServer=${env:SERVER_ENDPOINT}"] // requires this env var to be set
+      "tnsArgs": [
+        "--env.localServer=${env:SERVER_ENDPOINT}",
+        "--device 'iPhone 11'"
+      ] // requires this env var to be set
     },
     {
       "name": "Test on iOS",
