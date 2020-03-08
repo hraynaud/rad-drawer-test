@@ -72,7 +72,7 @@ export default {
       utils.showDrawer();
     },
     apiTopicSearchPath() {
-      return `${apiService.serverUrl()}/api/v1/topic_contacts`;
+      return `${apiService.getServerUrl()}/api/v1/topic_contacts`;
     },
     onSearch() {
       this.loadWebview();
@@ -81,7 +81,7 @@ export default {
     loadWebview() {
       headers.set("X-Custom-Header-Topic", this.searchValue);
       WebViewUtils.addHeaders(webView, headers);
-      webView.src = this.apiTopicSearhPath();
+      webView.src = this.apiTopicSearchPath();
     },
     pageLoaded(args) {
       let p = args.object;
