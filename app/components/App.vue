@@ -1,5 +1,10 @@
 <template lang="html">
-  <RadSideDrawer ref="drawer" drawerLocation="Left" :gesturesEnabled="isEnabled()" :drawerTransition="transition">
+  <RadSideDrawer
+    ref="drawer"
+    drawerLocation="Left"
+    :gesturesEnabled="isEnabled()"
+    :drawerTransition="transition"
+  >
     <StackLayout ~drawerContent backgroundColor="#ffffff">
       <slot name="drawerContent"></slot>
     </StackLayout>
@@ -16,17 +21,15 @@ import { authService } from "../services/auth.service";
 export default {
   data() {
     return {
-      transition: new SlideInOnTopTransition(),
+      transition: new SlideInOnTopTransition()
     };
   },
   methods: {
     isEnabled: function() {
-      console.log("!!!!!!! isEnabled called", authService.isLoggedIn());
       return authService.isLoggedIn();
     }
-  },
+  }
 };
 </script>
 
-<style lang="css">
-</style>
+<style lang="css"></style>
