@@ -49,14 +49,14 @@ export default {
   },
   mounted() {
     SelectedPageService.getInstance().updateSelectedPage("Home");
-    apiService.get("api/v1/projects").then(
+    apiService.get("/api/v1/projects").then(
       data => {
         this.projects = data.sort(function(a, b) {
           return a.name > b.name ? 1 : -1;
         });
       },
       error => {
-        console.error("!!!!", error);
+        console.error("!!!! error retrieving projects:", error);
       }
     );
   },
