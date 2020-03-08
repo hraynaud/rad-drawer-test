@@ -57,7 +57,6 @@ function requestConfig(custConfig, path) {
         },
         content: ""
     };
-
     return { ...baseConfig, ...custConfig, url: url };
 }
 
