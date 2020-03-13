@@ -35,22 +35,31 @@
           col="1"
         />
       </StackLayout>
-      <WebView id="graph2" ref="graph2" row="1" />
+      <WebView
+        id="graph2"
+        ref="graph2"
+        row="1"
+        @loadFinished="webViewLoadFinished"
+      />
     </GridLayout>
   </Page>
 </template>
 
 <script>
-import * as utils from "~/shared/utils";
-import SelectedPageService from "../shared/selected-page-service";
-import { apiService } from "../services/api.service";
-
+import nodeify from "nativescript-nodeify";
 import { WebView } from "tns-core-modules/ui/web-view";
 import { EventData } from "tns-core-modules/data/observable";
 import { WebViewUtils } from "nativescript-webview-utils";
+import { apiService } from "../services/api.service";
+import * as utils from "~/shared/utils";
+import SelectedPageService from "../shared/selected-page-service";
+import { SESSION_AUTH_KEY } from "../services/constants";
+const appSettings = require("application-settings");
+var webViewInterfaceModule = require("nativescript-webview-interface");
 
 let webView;
 const headers = new Map();
+var oWebViewInterface;
 
 export default {
   data() {
@@ -60,7 +69,7 @@ export default {
   },
   mounted() {
     SelectedPageService.getInstance().updateSelectedPage("Browse");
-    this.searchValue = "Cooking";
+    //this.searchValue = "Cooking";
   },
   computed: {
     message() {
@@ -78,15 +87,36 @@ export default {
       this.loadWebview();
       webView.reload();
     },
-    loadWebview() {
-      headers.set("X-Custom-Header-Topic", this.searchValue);
-      WebViewUtils.addHeaders(webView, headers);
-      webView.src = this.apiTopicSearchPath();
-    },
     pageLoaded(args) {
       let p = args.object;
       webView = p.getViewById("graph2");
-      this.loadWebview();
+      headers.set("Authorization", appSettings.getString(SESSION_AUTH_KEY));
+      WebViewUtils.addHeaders(webView, headers);
+      oWebViewInterface = new webViewInterfaceModule.WebViewInterface(
+        webView,
+        this.apiTopicSearchPath()
+      );
+      oWebViewInterface.on(
+        "loaded",
+        function(eventData) {
+          this.callJSFunction();
+        }.bind(this)
+      );
+    },
+
+    loadWebview() {
+      headers.set("X-Custom-Header-Topic", this.searchValue);
+      WebViewUtils.addHeaders(webView, headers);
+    },
+
+    webViewLoadFinished(args) {
+      const wv = args.object;
+    },
+
+    callJSFunction() {
+      oWebViewInterface.callJSFunction("initGraph", "test", function(result) {
+        console.log(">>>>>>>>  initGraph called loaded event from webview");
+      });
     }
   }
 };
