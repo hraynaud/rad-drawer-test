@@ -54,9 +54,9 @@ import { apiService } from "../services/api.service";
 import * as utils from "~/shared/utils";
 import SelectedPageService from "../shared/selected-page-service";
 import { SESSION_AUTH_KEY } from "../services/constants";
+
 const appSettings = require("application-settings");
 var webViewInterfaceModule = require("nativescript-webview-interface");
-
 let webView;
 const headers = new Map();
 var oWebViewInterface;
@@ -69,7 +69,6 @@ export default {
   },
   mounted() {
     SelectedPageService.getInstance().updateSelectedPage("Browse");
-    //this.searchValue = "Cooking";
   },
   computed: {
     message() {
@@ -110,12 +109,12 @@ export default {
     },
 
     webViewLoadFinished(args) {
-      const wv = args.object;
+      console.log("!!! webview loaded");
     },
 
     callJSFunction() {
       oWebViewInterface.callJSFunction("initGraph", "test", function(result) {
-        console.log(">>>>>>>>  initGraph called loaded event from webview");
+        console.log("!!! remote function initGraph called in webview");
       });
     }
   }
