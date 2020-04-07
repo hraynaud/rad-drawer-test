@@ -1,5 +1,5 @@
 <template>
-  <Page actionBarHidden="true">
+  <Page actionBarHidden="true" @loaded="checkToken">
     <FlexboxLayout class="page">
       <StackLayout class="form">
         <Image class="logo" src="~/assets/images/logo.png"></Image>
@@ -29,20 +29,6 @@
               hint="Password"
               secure="true"
               v-model="password"
-              :returnKeyType="isLoggingIn ? 'done' : 'next'"
-              @returnPress="focusConfirmPassword"
-            ></TextField>
-            <StackLayout class="hr-light"></StackLayout>
-          </StackLayout>
-
-          <StackLayout row="2" v-show="!isLoggingIn" class="input-field">
-            <TextField
-              class="input"
-              ref="confirmPassword"
-              :isEnabled="!loading"
-              hint="Confirm password"
-              secure="true"
-              v-model="confirmPassword"
               returnKeyType="done"
             ></TextField>
             <StackLayout class="hr-light"></StackLayout>
@@ -52,25 +38,22 @@
         </GridLayout>
 
         <Button
-          :text="isLoggingIn ? 'Log In' : 'Sign Up'"
+          text="Log In"
           :isEnabled="!loading"
           @tap="submit"
           class="btn btn-primary m-t-20"
         ></Button>
         <Label
-          *v-show="isLoggingIn"
           text="Forgot your password?"
           class="login-label"
           @tap="forgotPassword()"
         ></Label>
       </StackLayout>
 
-      <Label class="login-label sign-up-label" @tap="toggleForm">
+      <Label class="login-label sign-up-label" @tap="switchToRegister">
         <FormattedString>
-          <Span
-            :text="isLoggingIn ? 'Don’t have an account? ' : 'Back to Login'"
-          ></Span>
-          <Span :text="isLoggingIn ? 'Sign up' : ''" class="bold"></Span>
+          <Span text="Don’t have an account? "></Span>
+          <Span text="Sign Up" class="bold"></Span>
         </FormattedString>
       </Label>
     </FlexboxLayout>
@@ -80,13 +63,13 @@
 <script>
 import Home from "./Home";
 import { authService } from "../services/auth.service";
+import Registration from "./Registration";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
-      confirmPassword: "",
       submitted: false,
       loading: false,
       isLoggingIn: true,
@@ -95,8 +78,11 @@ export default {
     };
   },
   methods: {
-    toggleForm() {
-      this.isLoggingIn = !this.isLoggingIn;
+    checkToken() {
+      this.$store.commit("loginFromStorage");
+    },
+    switchToRegister() {
+      this.$navigateTo(Registration, { clearHistory: true });
     },
 
     submit() {
@@ -106,11 +92,7 @@ export default {
       }
 
       this.loading = true;
-      if (this.isLoggingIn) {
-        this.login();
-      } else {
-        this.register();
-      }
+      this.login();
     },
 
     login() {
@@ -124,26 +106,6 @@ export default {
         .catch(error => {
           this.loading = false;
           this.errorAlert(error.message);
-        });
-    },
-
-    register() {
-      if (this.password != this.confirmPassword) {
-        this.errorAlert("Your passwords do not match.");
-        this.loading = false;
-        return;
-      }
-
-      authService
-        .register(this.email, this.password)
-        .then(() => {
-          this.loading = false;
-          this.alert("Your account was successfully created.");
-          this.isLoggingIn = true;
-        })
-        .catch(e => {
-          this.loading = false;
-          this.errorAlert("We were unable to create your account.");
         });
     },
 

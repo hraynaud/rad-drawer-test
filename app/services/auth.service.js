@@ -70,5 +70,5 @@ function signIn(token) {
     var user = (({ first, last }) => ({ first, last }))(jwt.decode(token));
 
     appSettings.setString(SESSION_USER_KEY, JSON.stringify(user));
-    store.dispatch("login");
+    store.dispatch("login", { token, user });
 }
