@@ -200,7 +200,7 @@ export default {
         .register(this.email, this.password, this.firstName, this.lastName)
         .then(() => {
           this.loading = false;
-          this.alert("Your account was successfully created.");
+          //  this.alert("Your account was successfully created.");
           this.$navigateTo(Home, { clearHistory: true });
         })
         .catch(e => {
