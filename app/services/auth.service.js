@@ -24,12 +24,12 @@ function login(email, password) {
         });
 }
 
-function register(email, password) {
+function register(email, password, firstName, lastName) {
     return apiService
-        .post("/register", { email, password })
-        .then(handleLogin)
+        .post("/register", { email, password, firstName, lastName })
+        .then(handleRegistration)
         .catch(error => {
-            throw new error(error);
+            throw new Error(error);
         });
 }
 
@@ -48,6 +48,10 @@ function currentUser() {
     }
 }
 
+function handleRegistration(data) {
+    handleLogin(data);
+}
+
 function handleLogin(data) {
     if (data && data.error) {
         throw new Error(data.error);
@@ -64,11 +68,8 @@ function isLoggedIn() {
 }
 
 function signIn(token) {
-    appSettings.setString(SESSION_AUTH_KEY, token);
-
-    //pass the decoded jwt into IIFE then destructue and set user var.
-    var user = (({ first, last }) => ({ first, last }))(jwt.decode(token));
-
-    appSettings.setString(SESSION_USER_KEY, JSON.stringify(user));
+    //pass the decoded jwt into IIFE then destructure and set user to extreact name and email.
+    // practicing my es6-fu
+    let user = (({ email, name }) => ({ email, name }))(jwt.decode(token));
     store.dispatch("login", { token, user });
 }
