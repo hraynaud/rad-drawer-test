@@ -19,7 +19,7 @@ new Vue({
     render(h) {
         return h(App, [
             h(DrawerContent, { slot: "drawerContent" }),
-            h(authService.isLoggedIn() ? Home : Login, { slot: "mainContent" })
+            h(store.getters.loggedIn ? Home : Login, { slot: "mainContent" })
         ]);
     }
 }).$start();

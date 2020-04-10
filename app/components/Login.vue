@@ -96,7 +96,6 @@ export default {
     },
 
     login() {
-      this.loading = true;
       authService
         .login(this.email, this.password)
         .then(() => {

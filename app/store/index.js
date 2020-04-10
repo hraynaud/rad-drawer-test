@@ -2,13 +2,13 @@ import Vue from "nativescript-vue";
 import Vuex from "vuex";
 import { SESSION_USER_KEY, SESSION_AUTH_KEY } from "../services/constants";
 const appSettings = require("application-settings");
-
+import * as utils from "~/shared/utils";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
         loggedIn: false,
-        user: null,
+        user: null
     },
     mutations: {
         setLoggedInState(state, user) {
@@ -33,7 +33,7 @@ export const store = new Vuex.Store({
                 state.loggedIn = true;
             }
             return state.loggedIn;
-        },
+        }
     },
     actions: {
         logout({ commit }) {
@@ -46,10 +46,11 @@ export const store = new Vuex.Store({
             appSettings.setString(SESSION_AUTH_KEY, token);
             appSettings.setString(SESSION_USER_KEY, JSON.stringify(user));
             context.commit("setLoggedInState", user);
-        },
+        }
     },
     getters: {
-        isLoggedIn: (state) => !!state.loggedIn,
-        user: (state) => state.user,
-    },
+        isLoggedIn: state => state.loggedIn,
+        user: state => state.user,
+        userName: state => (state.user ? state.user.name : "")
+    }
 });

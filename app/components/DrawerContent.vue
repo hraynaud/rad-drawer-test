@@ -1,46 +1,91 @@
 <template lang="html">
-<GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
-            <StackLayout row="0" class="sidedrawer-header">
-                <Label class="sidedrawer-header-image fa" text.decode="&#xf2bd;"></Label>
-                <Label class="sidedrawer-header-brand" text="User Name"></Label>
-                
-                <FlexboxLayout justifyContent="space-between">
-                    <Label width="*" class="footnote" alignSelf="flex-start"  text="username@mail.com"></Label>
-                    <Label witdth="30%" class="footnote" text="Logout" @tap="onLogoutTap()"></Label>
-                </FlexboxLayout>
-            </StackLayout>
-        
-            <ScrollView row="1" class="sidedrawer-content"> 
-                <StackLayout>
-                    <GridLayout columns="auto, *" :class="'sidedrawer-list-item' + (selectedPage === 'Home' ? ' selected': '')" @tap="onNavigationItemTap(Home)">
-                        <Label col="0" text.decode="&#xf015;" class="fa"></Label>
-                        <Label col="1" text="Home" class="p-r-10"></Label>
-                    </GridLayout>
+  <GridLayout rows="auto, *" class="sidedrawer sidedrawer-left">
+    <StackLayout row="0" class="sidedrawer-header">
+      <Label class="sidedrawer-header-image fa" text.decode="&#xf2bd;"></Label>
+      <Label class="sidedrawer-header-brand" :text="name"></Label>
 
-                    <GridLayout columns="auto, *" :class="'sidedrawer-list-item' + (selectedPage === 'Browse' ? ' selected': '')" @tap="onNavigationItemTap(Browse)">
-                        <Label col="0" text.decode="&#xf1ea;" class="fa"></Label>
-                        <Label col="1" text="Browse" class="p-r-10"></Label>
-                    </GridLayout>
+      <FlexboxLayout justifyContent="space-between">
+        <Label
+          width="*"
+          class="footnote"
+          alignSelf="flex-start"
+          text="username@mail.com"
+        ></Label>
+        <Label
+          witdth="30%"
+          class="footnote"
+          text="Logout"
+          @tap="onLogoutTap()"
+        ></Label>
+      </FlexboxLayout>
+    </StackLayout>
 
-                    <GridLayout columns="auto, *" :class="'sidedrawer-list-item' + (selectedPage === 'Search' ? ' selected': '')" @tap="onNavigationItemTap(Search)">
-                        <Label col="0" text.decode="&#xf002;" class="fa"></Label>
-                        <Label col="1" text="Search" class="p-r-10"></Label>
-                    </GridLayout>
-
-                    <GridLayout columns="auto, *" :class="'sidedrawer-list-item' + (selectedPage === 'Featured' ? ' selected': '')" @tap="onNavigationItemTap(Featured)">
-                        <Label col="0" text.decode="&#xf005;" class="fa"></Label>
-                        <Label col="1" text="Featured" class="p-r-10"></Label>
-                    </GridLayout>
-        
-                    <StackLayout class="hr-light"></StackLayout>
-
-                    <GridLayout columns="auto, *" :class="'sidedrawer-list-item' + (selectedPage === 'Settings' ? ' selected': '')" @tap="onNavigationItemTap(Settings)">
-                        <Label col="0" text.decode="&#xf013;" class="fa"></Label>
-                        <Label col="1" text="Settings" class="p-r-10"></Label>
-                    </GridLayout>
-                </StackLayout>
-            </ScrollView>
+    <ScrollView row="1" class="sidedrawer-content">
+      <StackLayout>
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Home' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Home)"
+        >
+          <Label col="0" text.decode="&#xf015;" class="fa"></Label>
+          <Label col="1" text="Home" class="p-r-10"></Label>
         </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Browse' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Browse)"
+        >
+          <Label col="0" text.decode="&#xf1ea;" class="fa"></Label>
+          <Label col="1" text="Browse" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Search' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Search)"
+        >
+          <Label col="0" text.decode="&#xf002;" class="fa"></Label>
+          <Label col="1" text="Search" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Featured' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Featured)"
+        >
+          <Label col="0" text.decode="&#xf005;" class="fa"></Label>
+          <Label col="1" text="Featured" class="p-r-10"></Label>
+        </GridLayout>
+
+        <StackLayout class="hr-light"></StackLayout>
+
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Settings' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Settings)"
+        >
+          <Label col="0" text.decode="&#xf013;" class="fa"></Label>
+          <Label col="1" text="Settings" class="p-r-10"></Label>
+        </GridLayout>
+      </StackLayout>
+    </ScrollView>
+  </GridLayout>
 </template>
 
 <script>
@@ -77,6 +122,11 @@ export default {
     Search,
     Settings
   },
+  computed: {
+    name() {
+      return this.$store.getters.userName;
+    }
+  },
   methods: {
     onNavigationItemTap(component) {
       this.$navigateTo(component, {
@@ -85,7 +135,10 @@ export default {
       utils.closeDrawer();
     },
     onLogoutTap() {
+      utils.closeDrawer();
+      utils.disableDrawer();
       authService.logout();
+
       this.$navigateTo(Login, {
         clearHistory: true
       });

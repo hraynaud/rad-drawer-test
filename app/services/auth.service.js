@@ -34,10 +34,6 @@ function register(email, password, firstName, lastName) {
 }
 
 function logout() {
-    appSettings.remove(SESSION_USER_KEY);
-    appSettings.remove(SESSION_AUTH_KEY, "");
-    utils.closeDrawer();
-    utils.disableDrawer();
     store.dispatch("logout");
 }
 function currentUser() {
@@ -64,7 +60,7 @@ function handleLogin(data) {
 }
 
 function isLoggedIn() {
-    return !!this.currentUser();
+    return store.getters.isLoggedIn;
 }
 
 function signIn(token) {

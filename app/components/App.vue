@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     isEnabled: function() {
-      return authService.isLoggedIn();
+      return this.$store.getters.loggedIn;
     }
   }
 };
