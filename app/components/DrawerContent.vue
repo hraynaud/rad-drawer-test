@@ -70,6 +70,18 @@
           <Label col="1" text="Featured" class="p-r-10"></Label>
         </GridLayout>
 
+        <GridLayout
+          columns="auto, *"
+          :class="
+            'sidedrawer-list-item' +
+              (selectedPage === 'Profile' ? ' selected' : '')
+          "
+          @tap="onNavigationItemTap(Profile)"
+        >
+          <Label col="0" text.decode="&#xf005;" class="fa"></Label>
+          <Label col="1" text="Profile" class="p-r-10"></Label>
+        </GridLayout>
+
         <StackLayout class="hr-light"></StackLayout>
 
         <GridLayout
@@ -94,6 +106,7 @@ import Login from "./Login";
 import Browse from "./Browse";
 import Featured from "./Featured";
 import Search from "./Search";
+import Profile from "./Profile";
 import Settings from "./Settings";
 import * as utils from "~/shared/utils";
 import SelectedPageService from "~/shared/selected-page-service";
@@ -112,6 +125,7 @@ export default {
       Featured: Featured,
       Search: Search,
       Settings: Settings,
+      Profile: Profile,
       selectedPage: ""
     };
   },
@@ -120,7 +134,8 @@ export default {
     Browse,
     Featured,
     Search,
-    Settings
+    Settings,
+    Profile
   },
   computed: {
     name() {
