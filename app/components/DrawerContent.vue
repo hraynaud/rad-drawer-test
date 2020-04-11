@@ -78,7 +78,7 @@
           "
           @tap="onNavigationItemTap(Profile)"
         >
-          <Label col="0" text.decode="&#xf005;" class="fa"></Label>
+          <Label col="0" text.decode="&#xf007;" class="fa"></Label>
           <Label col="1" text="Profile" class="p-r-10"></Label>
         </GridLayout>
 

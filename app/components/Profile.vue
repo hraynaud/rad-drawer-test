@@ -22,7 +22,7 @@
         ios.position="left"
       >
       </ActionItem>
-      <Label class="action-bar-title" text="Featured"></Label>
+      <Label class="action-bar-title" text="Profile"></Label>
     </ActionBar>
 
     <!--GridLayout class="page-content">

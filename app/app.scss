@@ -7,3 +7,37 @@
 
 // Import common styles
 @import 'app-common';
+
+
+.profilePic {
+    width: 150;
+    height: 150;
+    border-radius: 100;
+    margin: 20;
+    border-color: #4db8ff;
+    border-width: 1;
+}
+
+.followersTxt {
+    text-align: center;
+    font-size: 14;
+    height: 20;
+}
+
+.followersTxtValue {
+    text-align: center;
+    margin-top: 10;
+    height: 25;
+    font-size: 22;
+    font-weight: bold;
+    color: #000;
+
+}
+
+.followersContainer {
+    width: 90%
+}
+
+.font-awesome {
+    font-family: "FontAwesome";
+}
