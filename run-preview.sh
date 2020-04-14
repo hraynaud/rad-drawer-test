@@ -1,1 +1,1 @@
-tns run preview --env.localServer=$SERVER_ENDPOINT
+tns preview --env.localServer=$SERVER_ENDPOINT
