@@ -12,7 +12,7 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "nativescript-iqkeyboardmanager": "^1.5.1",
     "nativescript-nodeify": "^0.8.0",
     "nativescript-theme-core": "~1.0.6",
